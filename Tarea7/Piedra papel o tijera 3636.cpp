@@ -94,10 +94,16 @@ void juegoConCPU() {
 void juegoConAmigo() {
 	system("cls");
 	int player1, player2, restart;
+	cout<<"¡ESTO SE JUEGA SIN VER LA ACCIÓN DE TU RIVAL! XD Sin trampas. \n"<<endl;
 
 	cout << "Elija la acción que desea jugar, Jugador 1. NO VEAS JUGADOR 2. " << endl;
 	cout << "1.Piedra. \n2.Papel. \n3.Tijera." << endl;
 	cin >> player1;
+	system("cls");
+
+	cout << "Elija la acción que desea jugar, Jugador 2. " << endl;
+	cout << "1.Piedra. \n2.Papel. \n3.Tijera." << endl;
+	cin >> player2;
 
 	switch (player1) {
 	case 1: cout << "Jugador 1 eligió Piedra. " << endl;
@@ -107,10 +113,6 @@ void juegoConAmigo() {
 	case 3: cout << "Jugador 1 eligió Tijeras. " << endl;
 		break;
 	}
-
-	cout << "Elija la acción que desea jugar, Jugador 2. NO VEAS LO QUE HIZO JUGADOR 1. " << endl;
-	cout << "1.Piedra. \n2.Papel. \n3.Tijera." << endl;
-	cin >> player2;
 
 	switch (player2) {
 	case 1: cout << "Jugador 2 eligió Piedra. " << endl;
