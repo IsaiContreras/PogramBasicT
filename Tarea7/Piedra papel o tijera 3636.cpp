@@ -30,6 +30,12 @@ void elegirModo() {
 	else if (modo == 1) {
 		juegoConCPU();
 	}
+
+	if (modo >= 3) {
+		cout << "Elige una opción valida. REINICIANDO... " << endl;
+		system("pause");
+		elegirModo();
+	}
 }
 
 void juegoConCPU() {
@@ -39,6 +45,13 @@ void juegoConCPU() {
 	cout << "Elija la acción que desea jugar. " << endl;
 	cout << "1.Piedra. \n2.Papel. \n3.Tijera." << endl;
 	cin >> player;
+
+	if (player >= 4 || player == 0) {
+		cout << "Elige una opción valida. REINICIANDO..." << endl;
+		system("pause");
+		juegoConCPU();
+	}
+	
 
 	switch (player) {
 	case 1: cout << "Eligiste Piedra. " << endl;
@@ -83,7 +96,7 @@ void juegoConCPU() {
 	cout << "1. Si. \n0. Volver a Elegir modo." << endl;
 	cin >> restart;
 
-	if (restart == 1) {
+	if (restart >= 1) {
 		juegoConCPU();
 	}
 	if (restart == 0) {
@@ -101,9 +114,21 @@ void juegoConAmigo() {
 	cin >> player1;
 	system("cls");
 
+	if (player1 >= 4 || player1 == 0) {
+		cout << "Elige una opción valida. REINICIANDO..." << endl;
+		system("pause");
+		juegoConAmigo();
+	}
+
 	cout << "Elija la acción que desea jugar, Jugador 2. " << endl;
 	cout << "1.Piedra. \n2.Papel. \n3.Tijera." << endl;
 	cin >> player2;
+
+	if (player2 >= 4 || player2 == 0) {
+		cout << "Elige una opción valida. REINICIANDO..." << endl;
+		system("pause");
+		juegoConAmigo();
+	}
 
 	switch (player1) {
 	case 1: cout << "Jugador 1 eligió Piedra. " << endl;
@@ -145,10 +170,11 @@ void juegoConAmigo() {
 	cout << "1. Si. \n0. Volver a Elegir modo." << endl;
 	cin >> restart;
 
-	if (restart == 1) {
+	if (restart >= 1) {
 		juegoConAmigo();
 	}
 	if (restart == 0) {
 		elegirModo();
 	}
+	
 }
