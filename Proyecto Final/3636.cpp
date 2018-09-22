@@ -1,15 +1,35 @@
 #include <iostream>
+#include <string>
 using namespace std;
 
+//Estructura de alumno
+struct alumno {
+	bool oc = false;
+	string nombre;
+	string apellidoP;
+	string apellidoM;
+	string correoE;
+	string tel;
+	string matr;
+	string num;
+	string calle;
+	string col;
+	int cal[3];
+};
+
+//Variables globales
 int selec;
+alumno a[20];
+int i;
+
+//Funciones
 void manual();
-void listaAlumnos();
 void editarLista();
 void agregar();
 void eliminar();
 
-
-void main() {
+//MENU PRINCIPAL
+int main() {
 	locale::global(locale("spanish"));
 	system("cls");
 	cout << "Menú Principal. " << endl;
@@ -20,7 +40,7 @@ void main() {
 	switch (selec) {
 	case 1: manual();
 		break;
-	case 2: listaAlumnos();
+	case 2: editarLista();
 		break;
 	case 3: cout << "Estas saliendo del programa. " << endl;
 		system("pause");
@@ -32,6 +52,7 @@ void main() {
 	}
 }
 
+//MANUAL DE USO
 void manual() {
 	system("cls");
 	cout << "Manual de Uso. " << endl;
@@ -40,34 +61,29 @@ void manual() {
 	main();
 }
 
-void listaAlumnos(){
-	system("cls");
-	cout << "Lista de Alumnos. " << endl;
-
-
-
-	cout << "1. Editar Lista. \n2. Salir al Menú. " << endl;
-	cin >> selec;
-
-	switch (selec) {
-	case 1: editarLista();
-		break;
-	case 2: main();
-		break;
-	default: cout << "Seleccione una opción valida. " << endl;
-		system("pause");
-		listaAlumnos();
-		break;
-	}
-}
-
+//EDITAR LISTA
 void editarLista() {
 	system("cls");
-	cout << "Edición de Lista de Alumnos. " << endl;
+	cout << "Lista de Alumnos. " << endl;
+	cout << endl;
 
+	for (int i = 0; i < 20; i++) {
+		if (a[i].oc == true) {
+			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
+			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			cout << "    Correo Electronico: " << a[i].correoE << ". Telefono: " << a[i].tel << ". " << endl;
+			cout << "    Direccion: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			cout << "    Calificaciones: C1: " << a[i].cal[0] << " C2: " << a[i].cal[1] << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << endl;
+		}
+		else {
+			cout << i + 1 << " --- VACIO --- " << endl;
+			cout << endl;
+		}
+	}
 
-
-	cout << "1. Registrar. \n2. Eliminar. \n3. Regresar a la Lista. " << endl;
+	cout << "Opciones de edicion de lista. " << endl;
+	cout << "1. Registrar. \n2. Eliminar. \n3. Volver al menu." << endl;
 	cin >> selec;
 
 	switch (selec) {
@@ -75,7 +91,7 @@ void editarLista() {
 		break;
 	case 2: eliminar();
 		break;
-	case 3: listaAlumnos();
+	case 3: main();
 		break;
 	default: cout << "Seleccione una opción valida. " << endl;
 		system("pause");
@@ -84,42 +100,128 @@ void editarLista() {
 	}
 }
 
+//REGISTRO ALUMNO;
 void agregar() {
 	system("cls");
 	cout << "Registro. " << endl;
-	cout << "Registre los datos del alumno. " << endl;
+	cout << "Escoja el numero donde desea registrar el alumno. " << endl;
+	cin >> i;
+	if (i >= 1 && i <= 20) {
+		i--;
 
-	cout << "1. Registrar otro alumno. \n2. Volver a edición de lista. " << endl;
-	cin >> selec;
+		if (a[i].oc == false) {
+			cout << "REGISTRE LOS SIGUIENTES DATOS. " << endl;
+			cout << "Nombre: ";
+			cin.ignore();
+			getline(cin, a[i].nombre);
+			cout << "Apellido Paterno: ";
+			cin>>a[i].apellidoP;
+			cout << "Apellido Materno: ";
+			cin >> a[i].apellidoM;
+			cout << "Matricula: ";
+			cin >> a[i].matr;
+			cout << "Correo Electronico: ";
+			cin >> a[i].correoE;
+			cout << "Telefono: ";
+			cin >> a[i].tel;
+			cout << "-Direccion-" << endl;
+			cout << "Colonia: ";
+			cin.ignore();
+			getline(cin, a[i].col);
+			cout << "Calle: " ;
+			getline(cin, a[i].calle);
+			cout << "Numero Residencia: ";
+			cin >> a[i].num;
+			a[i].oc = true;
+			cout << "REGISTRO TERMINADO. " << endl;
+			cout << endl;
 
-	switch (selec) {
-	case 1: agregar();
-		break;
-	case 2: editarLista();
-		break;
-	default: cout << "Seleccione una opción valida. " << endl;
+			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl; 
+			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			cout << "    Correo Electronico: " << a[i].correoE << ". Telefono: " << a[i].tel << ". " << endl;
+			cout << "    Direccion: " << a[i].calle<<" "<< a[i].num<<", "<< a[i].col <<endl;
+			cout << "    Calificaciones: C1: " << a[i].cal[0] << " C2: " << a[i].cal[1] << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << endl;
+
+			cout << "1. Registrar otro alumno. \n2. Volver a la lista. " << endl;
+			cin >> selec;
+
+			switch (selec) {
+			case 1: agregar();
+				break;
+			case 2: editarLista();
+				break;
+			default: cout << "Seleccione una opción valida. " << endl;
+				system("pause");
+				editarLista();
+				break;
+			}
+
+		}
+		else {
+			cout << "Este espacio esta ya ocupado, escoja otro.";
+			system("pause");
+			agregar();
+		}
+	}
+	else {
+		cout << "Numero de posicion invalida. Escoga un numero del 1 al 20." << endl;
 		system("pause");
 		agregar();
-		break;
 	}
 }
 
+//ELIMINAR ALUMNO
 void eliminar() {
 	system("cls");
 	cout << "Eliminar Alumno. " << endl;
+
+	for (int i = 0; i < 20; i++) {
+		if (a[i].oc == true) {
+			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
+			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			cout << "    Correo Electronico: " << a[i].correoE << ". Telefono: " << a[i].tel << ". " << endl;
+			cout << "    Direccion: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			cout << "    Calificaciones: C1: " << a[i].cal[0] << " C2: " << a[i].cal[1] << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << endl;
+		}
+		else {
+			cout << i + 1 << " --- VACIO --- " << endl;
+			cout << endl;
+		}
+	}
+
 	cout << "Seleccione el alumno que desea eliminar. " << endl;
+	cin >> i;
+	if (i >= 1 && i <= 20) {
+		i--;
+		if (a[i].oc == true) {
+			a[i].oc = false;
+			cout << "ALUMNO DADO DE BAJA. " << endl;
 
-	cout << "1. Eliminar otro alumno. \n2. Volver a edición de lista. " << endl;
-	cin >> selec;
+			cout << "1. Eliminar otro alumno. \n2. Volver a la lista. " << endl;
+			cin >> selec;
 
-	switch (selec) {
-	case 1: eliminar();
-		break;
-	case 2: editarLista();
-		break;
-	default: cout << "Seleccione una opción valida. " << endl;
+			switch (selec) {
+			case 1: eliminar();
+				break;
+			case 2: editarLista();
+				break;
+			default: cout << "Seleccione una opción valida. " << endl;
+				system("pause");
+				editarLista();
+				break;
+			}
+		}
+		else {
+			cout << "Este espacio ya esta vacio, escoja uno que contenga ya datos guardados. " << endl;
+			system("pause");
+			eliminar();
+		}
+	}
+	else {
+		cout << "Numero de posicion invalida. Escoga un numero del 1 al 20." << endl;
 		system("pause");
-		agregar();
-		break;
+		eliminar();
 	}
 }
