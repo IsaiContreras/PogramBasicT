@@ -52,15 +52,6 @@ int main() {
 	}
 }
 
-//MANUAL DE USO
-void manual() {
-	system("cls");
-	cout << "Manual de Uso. " << endl;
-	cout << "Bienvenido al manual de uso. \n" << endl;
-	system("pause");
-	main();
-}
-
 //EDITAR LISTA
 void editarLista() {
 	system("cls");
@@ -73,7 +64,7 @@ void editarLista() {
 			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
 			cout << "    Correo Electronico: " << a[i].correoE << ". Telefono: " << a[i].tel << ". " << endl;
 			cout << "    Direccion: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
-			cout << "    Calificaciones: C1: " << a[i].cal[0] << " C2: " << a[i].cal[1] << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << "    Calificaciones: C1: " << a[i].cal[0] << ". "<< " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 			cout << endl;
 		}
 		else {
@@ -104,7 +95,7 @@ void editarLista() {
 void agregar() {
 	system("cls");
 	cout << "Registro. " << endl;
-	cout << "Escoja el numero donde desea registrar el alumno. " << endl;
+	cout << "Escoja el numero donde desea registrar el alumno. (1 a 20)" << endl;
 	cin >> i;
 	if (i >= 1 && i <= 20) {
 		i--;
@@ -136,11 +127,11 @@ void agregar() {
 			cout << "REGISTRO TERMINADO. " << endl;
 			cout << endl;
 
-			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl; 
+			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
 			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
 			cout << "    Correo Electronico: " << a[i].correoE << ". Telefono: " << a[i].tel << ". " << endl;
-			cout << "    Direccion: " << a[i].calle<<" "<< a[i].num<<", "<< a[i].col <<endl;
-			cout << "    Calificaciones: C1: " << a[i].cal[0] << " C2: " << a[i].cal[1] << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << "    Direccion: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			cout << "    Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 			cout << endl;
 
 			cout << "1. Registrar otro alumno. \n2. Volver a la lista. " << endl;
@@ -182,7 +173,7 @@ void eliminar() {
 			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
 			cout << "    Correo Electronico: " << a[i].correoE << ". Telefono: " << a[i].tel << ". " << endl;
 			cout << "    Direccion: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
-			cout << "    Calificaciones: C1: " << a[i].cal[0] << " C2: " << a[i].cal[1] << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << "    Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 			cout << endl;
 		}
 		else {
@@ -191,7 +182,7 @@ void eliminar() {
 		}
 	}
 
-	cout << "Seleccione el alumno que desea eliminar. " << endl;
+	cout << "Seleccione el alumno que desea dar de baja (1 a 20). " << endl;
 	cin >> i;
 	if (i >= 1 && i <= 20) {
 		i--;
@@ -224,4 +215,14 @@ void eliminar() {
 		system("pause");
 		eliminar();
 	}
+}
+
+//MANUAL DE USO
+void manual() {
+	system("cls");
+	cout << "Manual de Uso. " << endl;
+	cout << "Bienvenido al manual de uso. \n" << endl;
+	cout << "AUN NO ESCRIBO EL MANUAL XD."<<endl;
+	system("pause");
+	main();
 }
