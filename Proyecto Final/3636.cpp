@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <conio.h>
+#include <cstdlib>
 using namespace std;
 
 //Estructura de alumno
@@ -23,6 +24,7 @@ struct alumno {
 char selec;
 alumno a[20];
 int i;
+string iC;
 
 //Funciones
 void manual();
@@ -34,6 +36,32 @@ void buscarYMostrar();
 void buscarYModificar();
 void buscarYEliminar();
 
+bool validadorSelec(char s);
+float calculaPromedio(float P1, float P2, float P3);
+
+//Validador para Selec
+bool validadorSelec(char s) {
+	bool r;
+	if (s >= 48 && s <= 57) {
+		r = true;
+	}
+	else {
+		r = false;
+	}
+	return r;
+}
+
+//Calcula promedio final
+float calculaPromedio(float P1, float P2, float P3) {
+	float sumaTotal;
+	P1 = P1 * .30;
+	P2 = P2 * .45;
+	P3 = P3 * .25;
+	sumaTotal = P1 + P2 + P3;
+	return sumaTotal;
+}
+
+
 //MENU PRINCIPAL
 int main() {
 	locale::global(locale("spanish"));
@@ -42,7 +70,12 @@ int main() {
 	cout << endl;
 	cout << "Introduzca el número de la opción que desea seleccionar. " << endl;
 	cout << "1. Manual de Uso. \n2. Lista de alumnos. \n3. Salir.  " << endl;
-	cin >> selec;
+
+	selec = _getch();
+	while (!validadorSelec(selec)) {
+		selec = _getch();
+	}
+	
 
 	switch (selec) {
 	case '1': manual();
@@ -66,12 +99,30 @@ void editarLista() {
 	cout << endl;
 
 	for (int i = 0; i < 20; i++) {
+		if (i < 9) {
+		    if (a[i].oc == true) {
+			    cout << i + 1 << ".-   Matricula: " << a[i].matr << ". " << endl;
+			    cout << "      Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			    cout << "      Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+			    cout << "      Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			    cout << "      Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+			    a[i].PF = calculaPromedio(a[i].cal[0], a[i].cal[1], a[i].cal[2]);
+			    cout << "      Promedio Final: " << a[i].PF << " ." << endl;
+			    cout << endl;
+		    }
+		    else {
+			    cout << i + 1 << " --- VACÍO --- " << endl;
+			    cout << endl;
+		    }
+	    }
 		if (a[i].oc == true) {
-			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
-			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-			cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
-			cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
-			cout << "    Calificaciones: C1: " << a[i].cal[0] << ". "<< " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << i + 1 << ".-  Matricula: " << a[i].matr << ". " << endl;
+			cout << "     Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			cout << "     Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+			cout << "     Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			cout << "     Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+			a[i].PF = calculaPromedio(a[i].cal[0], a[i].cal[1], a[i].cal[2]);
+			cout << "     Promedio Final: " << a[i].PF << " ." << endl;
 			cout << endl;
 		}
 		else {
@@ -83,7 +134,11 @@ void editarLista() {
 	cout << "Opciones de edición de lista. " << endl;
 	cout << "1. Registrar. \n2. Eliminar. \n3. Añadir una calificación. \n4. Buscar y Mostrar.";
 	cout << "\n5. Buscar y Modificar. \n6. Buscar y Eliminar. \n7. Salir al menu.";
-	cin >> selec;
+	
+	selec = _getch();
+	while (!validadorSelec(selec)) {
+		selec = _getch();
+	}
 
 	switch (selec) {
 	case '1': agregar();
@@ -113,8 +168,10 @@ void agregar() {
 	cout << "----Registro---- " << endl;
 	cout << endl;
 	cout << "Escoja el número donde desea registrar el alumno. (1 a 20)" << endl;
-	cout << "Ingrese cero para salir a la lista. " << endl;
-	cin >> i;
+	cout << "Ingrese cero o cualquier caracter para salir a la lista. " << endl;
+	getline(cin, iC);
+	i = atoi(iC.c_str());
+
 	if (i >= 1 && i <= 20) {
 		i--;
 
@@ -127,12 +184,16 @@ void agregar() {
 			cin>>a[i].apellidoP;
 			cout << "Apellido Materno: ";
 			cin >> a[i].apellidoM;
+
 			cout << "Matricula: ";
 			cin >> a[i].matr;
+
 			cout << "Correo Electronico: ";
 			cin >> a[i].correoE;
+
 			cout << "Teléfono: ";
 			cin >> a[i].tel;
+
 			cout << "-Dirección-" << endl;
 			cout << "Colonia: ";
 			cin.ignore();
@@ -141,7 +202,9 @@ void agregar() {
 			getline(cin, a[i].calle);
 			cout << "Número Residencia: ";
 			cin >> a[i].num;
+
 			a[i].oc = true;
+
 			cout << "REGISTRO TERMINADO. " << endl;
 			cout << endl;
 
@@ -153,7 +216,11 @@ void agregar() {
 			cout << endl;
 
 			cout << "1. Registrar otro alumno. \n2. Volver a la lista. " << endl;
-			cin >> selec;
+			
+			selec = _getch();
+			while (!validadorSelec(selec)) {
+				selec = _getch();
+			}
 
 			switch (selec) {
 			case '1': agregar();
@@ -190,12 +257,30 @@ void eliminar() {
 	cout << endl;
 
 	for (int i = 0; i < 20; i++) {
+		if (i < 9) {
+			if (a[i].oc == true) {
+				cout << i + 1 << ".-   Matricula: " << a[i].matr << ". " << endl;
+				cout << "      Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+				cout << "      Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+				cout << "      Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+				cout << "      Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+				a[i].PF = calculaPromedio(a[i].cal[0], a[i].cal[1], a[i].cal[2]);
+				cout << "      Promedio Final: " << a[i].PF << " ." << endl;
+				cout << endl;
+			}
+			else {
+				cout << i + 1 << " --- VACÍO --- " << endl;
+				cout << endl;
+			}
+		}
 		if (a[i].oc == true) {
-			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
-			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-			cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
-			cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
-			cout << "    Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << i + 1 << ".-  Matricula: " << a[i].matr << ". " << endl;
+			cout << "     Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			cout << "     Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+			cout << "     Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			cout << "     Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+			a[i].PF = calculaPromedio(a[i].cal[0], a[i].cal[1], a[i].cal[2]);
+			cout << "     Promedio Final: " << a[i].PF << " ." << endl;
 			cout << endl;
 		}
 		else {
@@ -205,8 +290,10 @@ void eliminar() {
 	}
 
 	cout << "Seleccione el alumno que desea dar de baja (1 a 20). " << endl;
-	cout << "Ingrese cero para salir a la lista. " << endl;
-	cin >> i;
+	cout << "Ingrese cero o cualquier caracter para salir a la lista. " << endl;
+	getline(cin, iC);
+	i = atoi(iC.c_str());
+
 	if (i >= 1 && i <= 20) {
 		i--;
 		if (a[i].oc == true) {
@@ -214,12 +301,16 @@ void eliminar() {
 			cout << "ALUMNO DADO DE BAJA. " << endl;
 
 			cout << "1. Eliminar otro alumno. \n2. Volver a la lista. " << endl;
-			cin >> selec;
+			
+			selec = _getch();
+			while (!validadorSelec(selec)) {
+				selec = _getch();
+			}
 
 			switch (selec) {
-			case 1: eliminar();
+			case '1': eliminar();
 				break;
-			case 2: editarLista();
+			case '2': editarLista();
 				break;
 			default: cout << "Seleccione una opción valida. " << endl;
 				system("pause");
@@ -245,63 +336,86 @@ void eliminar() {
 }
 
 void agregarCalif(){
+	int nCal;
+	float cal;
+	int rep = 1;
+	string repC;
+
+
 	system("cls");
 	cout << "----Agregar Calificación----" << endl;
 	cout << endl;
 
-	int nCal;
-	float cal;
-	int rep = 1;
+	cout << "Introduzca el número de alumno para agregar calificación (1 a 20). " << endl;
+	cin.ignore();
+	getline(cin, iC);
+	i = atoi(iC.c_str());
 
-	while (rep == 1) {
-		cout << "Introduzca el número de alumno para agregar calificación (1 a 20). " << endl;
-		cin >> i;
+	if (i >= 1 && i <= 20) {
+		i--;
 
-		if (i >= 1 && i <= 20) {
-			i--;
+		cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
+		cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+		cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+		cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+		cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+		cout << endl;
 
-			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
-			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-			cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
-			cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
-			cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
-			cout << endl;
-
-			cout << "Seleccione qué calificación registrará (1, 2 o 3)." << endl;
-			cin >> nCal;
-			if (nCal >= 1 && nCal <= 3) {
-				nCal--;
-				cout << "Registre calificación (entre 0 y 100). " << endl;
-				cin >> cal;
-				if (cal >= 0 && cal <= 100) {
-					a[i].cal[nCal] = cal;
-				}
-				else {
-					cout << "Introduzca una opcion valida. " << endl;
-					system("pause");
-				}
+		while(rep >= 1){
+	        cout << "Seleccione qué calificación registrará (1, 2 o 3)." << endl;
+		    cin >> nCal;
+		    if (nCal >= 1 && nCal <= 3) {
+			     nCal--;
+				 cout << "Registre calificación (entre 0 y 100). " << endl;
+			     cin >> cal;
+				 if (cal >= 0 && cal <= 100) {
+					  a[i].cal[nCal] = cal;
+				 }
+				 else {
+					 cout << "Introduzca una opcion valida. " << endl;
+					 system("pause");
+				 }
 			}
 			else {
-				cout << "Introduzca una opcion valida. " << endl;
-				system("pause");
+			     cout << "Introduzca una opcion valida. " << endl;
+		         system("pause");
 			}
-			cout << "¿Desea registrar otra calificacion?";
-			cin >> rep;
+		    cout << "¿Desea registrar otra calificacion para este alumno? " << endl;
+		    cout << "1. Si. 0. No. ";
+			getline(cin, repC);
+			rep = atoi(repC.c_str());
+			if (rep <= 0) {
+				rep = 0;
+			}
+			else {
+				rep = 1;
+			}
 		}
-		else {
-			cout << "Introduza una opcion valida. " << endl;
-			system("pause");
+		cout << "¿Desea registrar otra calificacion? "<<endl;
+		cout << "1. Si. 0. No. ";
+		selec = _getch();
+		while (!validadorSelec(selec)) {
+			selec = _getch();
 		}
+
+		switch (selec){
+		case '1': agregarCalif();
+			break;
+		default: editarLista();
+			break;
+		}
+	}
+	else {
+	    cout << "Introduza una opcion valida. " << endl;
+		system("pause");
+		agregarCalif();
 	}
 }
 
 void  buscarYMostrar() {
-	
 	string matLook;
 	bool encontrado = false;
-	int rep = 1;
 
-	while (rep == 1) {
 		system("cls");
 		cout << "----Buscar y Mostrar----" << endl;
 		cout << endl;
@@ -329,27 +443,209 @@ void  buscarYMostrar() {
 
 		if (!encontrado) {
 			cout << "Registro no encontrado." << endl;
+			cout << "¿Desea intentar de nuevo? (1. Si -- 0. No)" ;
+
+			selec = _getch();
+			while (!validadorSelec(selec)) {
+				selec = _getch();
+			}
+
+			switch (selec) {
+			case 1: buscarYMostrar();
+				break;
+			default: editarLista();
+				break;
+			}
 		}
 
 		cout << "Desea buscar otro registro (1. Si  -- 0.No)." << endl;
-		cin >> rep;
-		if (rep <= 0) {
-			rep = 0;
+		selec = _getch();
+		while (!validadorSelec(selec)) {
+			selec = _getch();
 		}
-		else {
-			rep = 1;
-		}
-	}
 
-	system("pause");
-	editarLista();
+		switch (selec) {
+		case 1: buscarYMostrar();
+			break;
+		default: editarLista();
+			break;
+		}
+		
 }
 
 void buscarYModificar() {
+	string matLook;
+	bool encontrado = false;
+	char rep = '1';
+
+	system("cls");
+	cout << "----Buscar y Modificar----" << endl;
+	cout << endl;
+
+	cout << "Introduzca la matricula del alumno que quiere modificar." << endl;
+	cin >> matLook;
+
+	for (int i = 0; i < 20; i++) {
+		if (matLook == a[i].matr) {
+			while (rep == '1') {
+				system("cls");
+				cout << "----Buscar y Modificar----" << endl;
+			    cout << "Encontrado.\n" << endl;
+
+			    cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
+			    cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			    cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+			    cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			    cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+			    cout << endl;
+
+			    cout << "¿Seleccione el campo que desea modificar? " << endl;
+				cout << "1. Nombre.\n2. Apellido.\n3. Matricula.\n4. Correo Electronico.\n5. Telefono.\n6. Calle.\n7. Numero.\n8. Colonia." << endl;
+				selec = _getch();
+				while (!validadorSelec(selec)) {
+					selec = _getc h();
+				}
+
+				switch (selec) {
+				case 1: system("cls");
+					cout << "Actual: " << a[i].nombre << ". " << endl;
+					cout << "Introduzca el nuevo nombre. " << endl;
+					getline(cin, a[i].nombre);
+					system("pause");
+				}
+
+				cout << "¿Quieres modificar otro campo? (1. Si -- 0. No)" << endl;
+				selec = _getch();
+				while (!validadorSelec(selec)) {
+					selec = _getch();
+				}
+
+				switch (selec) {
+				case 1: rep = '0';
+					break;
+				default: rep = '1';
+					break;
+				}
+			}
+
+			encontrado = true;
+            break;
+		}
+	}
+
+	if (!encontrado) {
+		cout << "Registro no encontrado." << endl;
+		cout << "¿Desea intentar de nuevo? (1. Si -- 0. No)";
+
+		selec = _getch();
+		while (!validadorSelec(selec)) {
+			selec = _getch();
+		}
+
+		switch (selec) {
+		case 1: buscarYMostrar();
+			break;
+		default: editarLista();
+			break;
+		}
+	}
+
+	cout << "Desea buscar otro registro (1. Si  -- 0.No)." << endl;
+	selec = _getch();
+	while (!validadorSelec(selec)) {
+		selec = _getch();
+	}
+
+	switch (selec) {
+	case '1': buscarYMostrar();
+		break;
+	default: editarLista();
+		break;
+	}
 
 }
 
 void buscarYEliminar() {
+	string matLook;
+	bool encontrado = false;
+
+	system("cls");
+	cout << "----Buscar y Eliminar----" << endl;
+	cout << endl;
+
+	cout << "Introduzca la matricula del alumno que quiere eliminar." << endl;
+	cin >> matLook;
+
+	for (int i = 0; i < 20; i++) {
+		if (matLook == a[i].matr) {
+			cout << "Encontrado." << endl;
+			cout << endl;
+
+			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
+			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+			cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << endl;
+
+			cout << "¿Seguro que desea elimiarlo? (1. Si -- 0. No) " << endl;
+			selec = _getch();
+			while (!validadorSelec(selec)) {
+				selec = _getch();
+			}
+
+			switch (selec) {
+			case '1': a[i].oc = false;
+				break;
+			default: cout << "¿Desea buscar otro registro para eliminar? (1. Si -- 0.No)" << endl;
+				selec = _getch();
+				while (!validadorSelec(selec)) {
+					selec = _getch();
+				}
+
+				switch (selec) {
+				case '1': buscarYEliminar();
+					break;
+				default: editarLista();
+					break;
+				}
+				break;
+			}
+
+			encontrado = true;
+            break;
+		}
+	}
+
+	if (!encontrado) {
+		cout << "Registro no encontrado." << endl;
+		cout << "¿Desea intentar de nuevo? (1. Si -- 0. No)";
+
+		selec = _getch();
+		while (!validadorSelec(selec)) {
+			selec = _getch();
+		}
+
+		switch (selec) {
+		case '1': buscarYMostrar();
+			break;
+		default: editarLista();
+			break;
+		}
+	}
+
+	cout << "Desea buscar otro registro (1. Si  -- 0.No)." << endl;
+	selec = _getch();
+	while (!validadorSelec(selec)) {
+		selec = _getch();
+	}
+
+	switch (selec) {
+	case '1': buscarYMostrar();
+		break;
+	default: editarLista();
+		break;
+	}
 
 }
 
