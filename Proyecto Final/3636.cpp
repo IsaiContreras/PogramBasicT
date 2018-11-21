@@ -8,17 +8,18 @@ using namespace std;
 //ESTRUCTURA DE DATOS DE ALUMNO
 struct alumno {
 	bool oc = false;
-	string nombre;
-	string apellidoP;
-	string apellidoM;
-	string correoE;
-	string tel;
-	string matr;
-	string num;
-	string calle;
-	string col;
-	float cal[3];
-	float PF;
+string nombre;
+string apellidoP;
+string apellidoM;
+string correo;
+string tel;
+string matr;
+string num;
+string calle;
+string col;
+float cal[3] = {0, 0, 0};
+float PF = 0;
+
 };
 
 //VARIABLES GLOBALES
@@ -29,38 +30,65 @@ string iC;
 
 //FUNCIONES EN MENU
 void salida();
-void manual();  
+void manual();
 void editarLista(); //
 void agregar(); //
 void eliminar(); //  
 void agregarCalif(); //
 void buscarYMostrar(); //
-void buscarYModificar(); 
+void buscarYModificar();
 void buscarYEliminar(); //
 
 //OTROS PROCESOS
-void lectura();
 void escritura();
+void lectura();
 bool validadorSelec(char s);
 float calculaPromedio(float P1, float P2, float P3);
 
 //Escritura de Datos
 void escritura() {
 	ofstream fichero;
-	fichero.open("a.data", ios::binary);
-	fichero.write((char*)&a, sizeof(a));
+	fichero.open("datos.txt");
+	for (int i = 0; i < 20; i++) {
+		fichero << a[i].nombre << endl;
+		fichero << a[i].apellidoP << endl;
+		fichero << a[i].apellidoM << endl;
+		fichero << a[i].matr << endl;
+		fichero << a[i].correo << endl;
+		fichero << a[i].tel << endl;
+		fichero << a[i].col << endl;
+		fichero << a[i].calle << endl;
+		fichero << a[i].num << endl;
+		fichero << a[i].oc << endl;
+		fichero << a[i].cal[0] << endl;
+		fichero << a[i].cal[1] << endl;
+		fichero << a[i].cal[2] << endl;
+		fichero << a[i].PF;
+	}
 	fichero.close();
 
 	editarLista();
 }
 
-//Lectura de Datos
 void lectura() {
-	/*
-	ifstream fichero("a.data", ios::binary);
-	archivo.read((char*)&a, sizeof(a));
-	archivo.close();
-	*/
+	ifstream fichero("datos.txt");
+	for (int i = 0; i < 20; i++) {
+		getline(fichero, a[i].nombre);
+		getline(fichero, a[i].apellidoP);
+		getline(fichero, a[i].apellidoM);
+		getline(fichero, a[i].matr);
+		getline(fichero, a[i].correo);
+		getline(fichero, a[i].tel);
+		getline(fichero, a[i].col);
+		getline(fichero, a[i].calle);
+		getline(fichero, a[i].num);
+		fichero >> a[i].oc;
+		fichero >> a[i].cal[0];
+		fichero >> a[i].cal[1];
+		fichero >> a[i].cal[2];
+		fichero >> a[i].PF;
+	}
+	fichero.close();
 }
 
 //Validador para Selec
@@ -72,6 +100,56 @@ bool validadorSelec(char s) {
 	else {
 		r = false;
 	}
+	return r;
+}
+
+
+bool validadorTelefono(string n) {
+	bool r = false;
+	int size = n.size();
+
+	if (size < 12) {
+		r = true;
+	}
+	else {
+		cout << "Numero telefonico invalido. Vuelva a introducirlo" << endl;
+		system("pause");
+	}
+
+	return r;
+}
+
+bool validadorCorreo(string c) {
+	bool r = false;
+	int valArroC = 0;
+	int valPuntC = 0;
+	int size = c.size();
+
+	for (int i = 0; i < size; i++) {
+		if (c[i] == '@') {
+			valArroC++;
+		}
+		if (c[i] == '.') {
+			valPuntC++;
+		}
+	}
+
+	if (c[size - 1] != 'm' &&  c[size - 2] != 'o' && c[size - 3] != 'c'  && c[size - 4] != '.'){
+		cout << "Correo Electronico invalido. Coloque .com al final." << endl;
+		system("pause");
+    }
+	else if (valArroC == 0) {
+		cout << "Correo Electronico invalido. Su correo debe contener un arroba." << endl;
+		system("pause");
+	}
+	else if (valArroC > 1) {
+		cout << "Correo Electronico invalido. Solo puede ingresar un arroba." << endl;
+		system("pause");
+	}
+	else {
+		r = true;
+	}
+
 	return r;
 }
 
@@ -131,7 +209,7 @@ void editarLista() {
 		    if (a[i].oc == true) {
 			    cout << i + 1 << ".-   Matricula: " << a[i].matr << ". " << endl;
 			    cout << "      Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-			    cout << "      Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+			    cout << "      Correo Electronico: " << a[i].correo << ". Teléfono: " << a[i].tel << ". " << endl;
 			    cout << "      Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
 			    cout << "      Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 			    a[i].PF = calculaPromedio(a[i].cal[0], a[i].cal[1], a[i].cal[2]);
@@ -193,30 +271,34 @@ void agregar() {
 		if (a[i].oc == false) {
 			cout << "REGISTRE LOS SIGUIENTES DATOS. " << endl;
 			cout << "Nombre: ";
-		
 			getline(cin, a[i].nombre);
 			cout << "Apellido Paterno: ";
-			cin>>a[i].apellidoP;
+			getline(cin, a[i].apellidoP);
 			cout << "Apellido Materno: ";
-			cin >> a[i].apellidoM;
+			getline(cin, a[i].apellidoM);
 
 			cout << "Matricula: ";
-			cin >> a[i].matr;
+			getline(cin, a[i].matr);
 
 			cout << "Correo Electronico: ";
-			cin >> a[i].correoE;
+			getline(cin, a[i].correo);
+			while (!validadorCorreo(a[i].correo)) {
+				getline(cin, a[i].correo);
+			}
 
 			cout << "Teléfono: ";
-			cin >> a[i].tel;
+			getline(cin, a[i].tel);
+			while (!validadorTelefono(a[i].tel)) {
+				getline(cin, a[i].tel);
+			}
 
 			cout << "-Dirección-" << endl;
 			cout << "Colonia: ";
-			cin.ignore();
 			getline(cin, a[i].col);
 			cout << "Calle: " ;
 			getline(cin, a[i].calle);
 			cout << "Número Residencia: ";
-			cin >> a[i].num;
+			getline(cin, a[i].num);
 
 			a[i].oc = true;
 
@@ -225,14 +307,13 @@ void agregar() {
 
 			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
 			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-			cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+			cout << "    Correo Electronico: " << a[i].correo << ". Teléfono: " << a[i].tel << ". " << endl;
 			cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
 			cout << "    Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 			cout << endl;
 
 			cout << "1. Registrar otro alumno. \n2. Volver a la lista. " << endl;
 			
-			cin.ignore();
 			selec = _getch();
 			while (!validadorSelec(selec)) {
 				selec = _getch();
@@ -276,7 +357,7 @@ void eliminar() {
 			if (a[i].oc == true) {
 				cout << i + 1 << ".-   Matricula: " << a[i].matr << ". " << endl;
 				cout << "      Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-				cout << "      Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+				cout << "      Correo Electronico: " << a[i].correo << ". Teléfono: " << a[i].tel << ". " << endl;
 				cout << "      Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
 				cout << "      Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 				a[i].PF = calculaPromedio(a[i].cal[0], a[i].cal[1], a[i].cal[2]);
@@ -340,7 +421,9 @@ void agregarCalif(){
 	int nCal;
 	float cal;
 	char rep = '1';
+	string nCalS;
 	string repC;
+	string calS;
 
 
 	system("cls");
@@ -353,60 +436,71 @@ void agregarCalif(){
 
 	if (i >= 1 && i <= 20) {
 		i--;
+		if (a[i].oc == true) {
+			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
+			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
+			cout << "    Correo Electronico: " << a[i].correo << ". Teléfono: " << a[i].tel << ". " << endl;
+			cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
+			cout << endl;
 
-		cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
-		cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-		cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
-		cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
-		cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
-		cout << endl;
+			while (rep == '1') {
+				cout << "Seleccione qué calificación registrará (1, 2 o 3)." << endl;
+				getline(cin, nCalS);
+				nCal = atoi(nCalS.c_str());
 
-		while(rep == '1'){
-	        cout << "Seleccione qué calificación registrará (1, 2 o 3)." << endl;
-		    cin >> nCal;
-		    if (nCal >= 1 && nCal <= 3) {
-			     nCal--;
-				 cout << "Registre calificación (entre 0 y 100). " << endl;
-			     cin >> cal;
-				 if (cal >= 0 && cal <= 100) {
-					  a[i].cal[nCal] = cal;
-				 }
-				 else {
-					 cout << "Introduzca una opcion valida. " << endl;
-					 system("pause");
-				 }
+				if (nCal >= 1 && nCal <= 3) {
+					nCal--;
+					cout << "Registre calificación. (entre 0 y 100). Separe las decimales con , " << endl;
+					getline(cin, calS);
+					cal = atof(calS.c_str());
+
+					if (cal >= 0 && cal <= 100) {
+						a[i].cal[nCal] = cal;
+					}
+					else {
+						cout << "Introduzca una opcion valida. " << endl;
+						system("pause");
+					}
+				}
+				else {
+					cout << "Introduzca una opcion valida. " << endl;
+					system("pause");
+				}
+				cout << "¿Desea registrar otra calificacion para este alumno? " << endl;
+				cout << "1. Si. 0. No. \n";
+
+				selec = _getch();
+				while (!validadorSelec(selec)) {
+					selec = _getch();
+				}
+
+				switch (selec) {
+				case '1': rep = '1';
+					break;
+				default: rep = '0';
+					break;
+				}
 			}
-			else {
-			     cout << "Introduzca una opcion valida. " << endl;
-		         system("pause");
-			}
-		    cout << "¿Desea registrar otra calificacion para este alumno? " << endl;
-		    cout << "1. Si. 0. No. \n";
-			
+			cout << "¿Desea registrar otra calificacion para otro registro? " << endl;
+			cout << "1. Si. 0. No. \n";
 			selec = _getch();
 			while (!validadorSelec(selec)) {
 				selec = _getch();
 			}
-
+			
 			switch (selec) {
-			case '1': rep = '1';
+			case '1': agregarCalif();
 				break;
-			default: rep = '0';
+			default: editarLista();
 				break;
 			}
 		}
-		cout << "¿Desea registrar otra calificacion? "<<endl;
-		cout << "1. Si. 0. No. \n";
-		selec = _getch();
-		while (!validadorSelec(selec)) {
-			selec = _getch();
-		}
+		else {
+			cout << "No hay alumno ocupando este espacio." << endl;
 
-		switch (selec){
-		case '1': agregarCalif();
-			break;
-		default: editarLista();
-			break;
+			system("pause");
+			editarLista();
 		}
 	}
 	else {
@@ -435,7 +529,7 @@ void  buscarYMostrar() {
 
 				cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
 				cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-				cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+				cout << "    Correo Electronico: " << a[i].correo << ". Teléfono: " << a[i].tel << ". " << endl;
 				cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
 				cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 				cout << endl;
@@ -500,104 +594,56 @@ void buscarYModificar() {
 
 				cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
 				cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-				cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+				cout << "    Correo Electronico: " << a[i].correo << ". Teléfono: " << a[i].tel << ". " << endl;
 				cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
 				cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 				cout << endl;
 
-				cout << "¿Seleccione el campo que desea modificar? " << endl;
-				cout << "1. Nombre.\n2. Apellido.\n3. Matricula.\n4. Correo Electronico.\n5. Telefono.\n6. Calle.\n7. Numero.\n8. Colonia.\n0. CANCELAR.\n" << endl;
-				selec = _getch();
-				while (!validadorSelec(selec)) {
-					selec = _getch();
+				cout << "Vuelva a ingresar los datos del alumno: " << endl;
+
+				cout << "Nombre: ";
+				cin.ignore();
+				getline(cin, a[i].nombre);
+				cout << "Apellido Paterno: ";
+				getline(cin, a[i].apellidoP);
+				cout << "Apellido Materno: ";
+				getline(cin, a[i].apellidoM);
+
+				cout << "Matricula: ";
+				getline(cin, a[i].matr);
+
+				cout << "Correo Electronico: ";
+				getline(cin, a[i].correo);
+				while (!validadorCorreo(a[i].correo)) {
+					getline(cin, a[i].correo);
 				}
 
-
-				switch (selec) {
-				case'0': break;
-				case '1': system("cls");
-					cout << "MODIFICAR NOMBRE:" << endl;
-					cout << "Actual: " << a[i].nombre << ". " << endl;
-					cout << "Introduzca el nuevo nombre. " << endl;
-					getline(cin, a[i].nombre);
-					system("pause");
-					break;
-				case '2': system("cls");
-					cout << "MODIFICAR APELLIDO:" << endl;
-					cout << "Actual: " << a[i].apellidoP << " " << a[i].apellidoM << ". " << endl;
-					cout << "Seleccione Apellido a modificar (1. Paterno. 2. Materno)." << endl;
-					selec = _getch();
-					while (!validadorSelec(selec)) {
-						selec = _getch();
-					}
-					
-
-					switch (selec) {
-					case '1': cout << "Indroduzca Apellido Paterno: " << endl;
-						getline(cin, a[i].apellidoP);
-						system("pause");
-						break;
-					case '2': cout << "Inttroduzca Apellido Materno: " << endl;
-						getline(cin, a[i].apellidoM);
-						system("pause");
-						break;
-					}
-					break;
-				case '3': system("cls");
-					cout << "MODIFICAR MATRICULA: " << endl;
-					cout << "Actual: " << a[i].matr << "." << endl;
-					cout << "Introduzca nueva matricula. " << endl;
-					cin >> a[i].matr;
-					system("pause");
-					break;
-				case '4': system("cls");
-					cout << "MODIFICAR CORREO ELECTRONICO: " << endl;
-					cout << "Actual: " << a[i].correoE << ". " << endl;
-					cout << "Introduzca nuevo correo electronico. " << endl;
-					cin >> a[i].correoE;
-					system("pause");
-					break;
-				case '5': system("cls");
-					cout << "MODIFICAR TELEFONO: " << endl;
-					cout << "Actual: " << a[i].tel << ". " << endl;
-					cout << "Introduzca nuevo telefono." << endl;
-					cin >> a[i].tel;
-					system("pause");
-					break;
-				case '6': system("cls");
-					cout << "MODIFICAR DIRECCION (CALLE): " << endl;
-					cout << "Actual: " << a[i].calle << ". " << endl;
-					cout << "Introduzca nueva calle." << endl;
-					getline(cin, a[i].calle);
-					system("pause");
-					break;
-				case '7': system("cls");
-					cout << "MODIFICAR DIRECCION (NÚMERO): " << endl;
-					cout << "Actual: " << a[i].num << ". " << endl;
-					cout << "Introduzca nuevo numero." << endl;
-					getline(cin, a[i].num);
-					system("pause");
-					break;
-				case '8': system("cls");
-					cout << "MODIFICAR DIRECCION (COLONIA): " << endl;
-					cout << "Actual: " << a[i].col << ". " << endl;
-					cout << "Introduzca nueva colonia." << endl;
-					getline(cin, a[i].col);
-					system("pause");
-					break;
+				cout << "Teléfono: ";
+				getline(cin, a[i].tel);
+				while (!validadorTelefono(a[i].tel)) {
+					getline(cin, a[i].tel);
 				}
 
-				cout << "¿Quieres modificar otro campo? (1. Si -- 0. No)" << endl;
+				cout << "-Dirección-" << endl;
+				cout << "Colonia: ";
+				getline(cin, a[i].col);
+				cout << "Calle: ";
+				getline(cin, a[i].calle);
+				cout << "Número Residencia: ";
+				getline(cin, a[i].num);
+
+				cout << "Modificacion completa." << endl;
+				cout << "Desea repetir el proceso  (1.Si - 0.No)" << endl;
+				
 				selec = _getch();
 				while (!validadorSelec(selec)) {
 					selec = _getch();
 				}
 
 				switch (selec) {
-				case '1': rep = '1';
+				case '0': rep = '0';
 					break;
-				default: rep = '0';
-					break;
+				default: break;
 				}
 			}
 
@@ -658,7 +704,7 @@ void buscarYEliminar() {
 
 			cout << i + 1 << ".- Matricula: " << a[i].matr << ". " << endl;
 			cout << "    Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
-			cout << "    Correo Electronico: " << a[i].correoE << ". Teléfono: " << a[i].tel << ". " << endl;
+			cout << "    Correo Electronico: " << a[i].correo << ". Teléfono: " << a[i].tel << ". " << endl;
 			cout << "    Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
 			cout << "    Calificaciones.-  C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 			cout << endl;
@@ -724,19 +770,64 @@ void buscarYEliminar() {
 	}
 }
 
+void salida() {
+	ofstream fichero;
+	fichero.open("datos.txt");
+	for (int i = 0; i < 20; i++) {
+		fichero << a[i].nombre << endl;
+		fichero << a[i].apellidoP << endl;
+		fichero << a[i].apellidoM << endl;
+		fichero << a[i].matr << endl;
+		fichero << a[i].correo << endl;
+		fichero << a[i].tel << endl;
+		fichero << a[i].col << endl;
+		fichero << a[i].calle << endl;
+		fichero << a[i].num << endl;
+		fichero << a[i].oc << endl;
+		fichero << a[i].cal[0] << endl;
+		fichero << a[i].cal[1] << endl;
+		fichero << a[i].cal[2] << endl;
+		fichero << a[i].PF;
+	}
+	fichero.close();
+}
+
+
 //MANUAL DE USO
 void manual() {
 	system("cls");
-	cout << "Manual de Uso. " << endl;
-	cout << "Bienvenido al manual de uso. \n" << endl;
-	cout << "AUN NO ESCRIBO EL MANUAL XD."<<endl;
+	cout << "MANUAL DE USO. " << endl;
+	cout << "Bienvenido al manual de usuario. Antes de usar el programa, lea atentamente\neste manual de uso y siga cada instrucción para manejar datos.\nEste programa le facilitará el registro y la administración de sus alumnos.\n" << endl;
+	cout << "Navegación.\n";
+	cout << "Para navegar a través del menú, se desplegará en pantalla una lista de opciones,\npara seleccionar solo presiona la tecla del número indicado para cada opción.\n" << endl;
+	cout << "Lista de alumnos.\n";
+	cout << "Para ingresar a la lista de alumnos, al iniciar el programa presione la tecla 2.\nAl ingresar, se mostrará la lista de alumnos:\nLa lista tiene capacidad para almacenar 20 espacios de alumnos.\nSi existe un espacio ocupado, los datos del alumno se mostrarán en el\nsiguiente formato:" << endl;
+	cout << "-# Espacio-   -MATRÍCULA\n";
+	cout << "              -APELLIDO Y NOMBRE\n";
+	cout << "              -CORREO ELECTRÓNICO -TELÉFONO\n";
+	cout << "              -DIRECCIÓN\n";
+	cout << "              -CALIFICACIONES\n";
+	cout << "              -PROMEDIO FINAL\n";
+	cout << "Si existe un espacio desocupado o vacío, solo se mostrará el número de espacio\njunto a la palabra --VACÍO--.\n";
+	cout << "Debajo de la lista de alumnos, se desplegará las opciones de edición de lista.\nPara seleccionar una opción, presione la tecla del número indicado para cada opción.\n" << endl;
+	cout << "Registro alumno\n" << endl;
+	cout << "Para registrar un alumno, selecciona la opción Registrar en la lista de alumno.\nUna vez dentro, ingrese el número de espacio donde desea registrar al alumno e ingrese\nlos siguientes datos:\n";
+	cout << "-Nombre : Si posee más de un nombre, ingrese los dos en orden habitual y separados por un espacio.\n-Apellido Paterno.\n-Apellido Materno.\n-Matrícula.\n-Correo Electrónico: Este debe cumplir con ciertos carácteres para ser validado.\n     Debe contener un arroba, y terminar con .com\n-Teléfono: No debe pasar de los 12 caracteres.\n-Dirección:\n        -Colonia\n	-Calle\n	-Número.\n" << endl;
+	cout << "Eliminar alumno\n";
+	cout << "Pare eliminar un alumno del registro, ingrese a la opción Eliminar alumno debajo de la lista\nde alumnos. Se desplegará la lista de alumnos para que pueda observar el número de espacio\nde cada alumno. Para eliminar del registro, ingrese el número de espacio del alumno que\ndesea eliminar.\n" << endl;
+	cout << "Agregar calificacion\n";
+	cout << "El programa tiene espacio para guardar 3 calificaciones para cada uno de los alumnos registrados.\nPara agregar una calificacion, ingrese a la opción Agregar calificación debajo de la lista de\nalumnos. A continuación ingrese el número de espacio del alumno. Especifique el espacio\nde calificacón ingresando un número del 1 al 3 e ingrese la calificación. Recuerda que solo se admiten\nvalores de 0 a 100 para las calificaciones.\nSe le preguntará si desea agregar otra calificación para el mismo alumno, si así lo desea presione 1.\nRepita el proceso.\nSe le preguntará si desea agregar calificación para otro alumno, si así lo desea presione 1.\nRepita el proceso.\n" << endl;
+	cout << "Buscar y Mostrar\n";
+	cout << "Esta función permine buscar un registro en base a la matrícula del alumno y mostrarlo en pantalla.\nPara acceder a esta función, ingrese a la opción Buscar y Mostrar debajo de la lista de alumnos.\nPara buscar un registro, ingrese la matrícula del alumno que quiere buscar.\nSi el registro existe, se mostrara su información en pantalla.\n" << endl;
+	cout << "Buscar y Modificar\n";
+	cout << "Esta función permine buscar un registro en base a la matrícula del alumno y modificar los datos de este.\nPara acceder a esta función, ingrese a la opción Buscar y Modificar debajo de la lista de alumnos.\nPara buscar un registro, ingrese la matrícula del alumno que quiere buscar.\nSi el registro existe, se mostrará su información actual en pantalla y le permitirá ingresar de nuevo\nlos datos del alumno. Modifique el campo que desea.\n" << endl;
+	cout << "Buscar y Eliminar\n";
+	cout << "Esta función permine buscar un registro en base a la matrícula del alumno y eliminarlo.\nPara acceder a esta función, ingrese a la opción Buscar y Eliminar debajo de la lista de alumnos.\nPara buscar un registro, ingrese la matrícula del alumno que quiere buscar.\nSi el registro existe, se mostrara su información en pantalla y se le preguntará si desea eliminar\nese registro. Si está seguro de eliminarlo presione 1.\n" << endl;
+	cout << "Guardar cambios\n";
+	cout << "Si desea guardar los cambios ya hechos, ingrese a la opción Guardar cambios debajo de la lista de alumnos.\nSe guardarán los datos en el disco.\n" << endl;
+	cout << "Salir del programa\n";
+	cout << "Para salir del programa solo seleccione la opción Salir en el menú principal.\nAl salir, se ejecutara la función de guardar cambios para asegurar sus cambios.\n" << endl;
+	cout << "..." << endl;
 	system("pause");
 	main();
-}
-
-void salida() {
-	ofstream fichero;
-	fichero.open("a.data", ios::binary);
-	fichero.write((char*)&a, sizeof(a));
-	fichero.close();
 }
