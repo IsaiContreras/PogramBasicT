@@ -19,7 +19,6 @@ string calle;
 string col;
 float cal[3] = {0, 0, 0};
 float PF = 0;
-
 };
 
 //VARIABLES GLOBALES
@@ -70,6 +69,7 @@ void escritura() {
 	editarLista();
 }
 
+//Lectura de Datos
 void lectura() {
 	ifstream fichero("datos.txt");
 	for (int i = 0; i < 20; i++) {
@@ -103,7 +103,7 @@ bool validadorSelec(char s) {
 	return r;
 }
 
-
+//validarTelefono
 bool validadorTelefono(string n) {
 	bool r = false;
 	int size = n.size();
@@ -119,18 +119,15 @@ bool validadorTelefono(string n) {
 	return r;
 }
 
+//validarCorreo
 bool validadorCorreo(string c) {
 	bool r = false;
 	int valArroC = 0;
-	int valPuntC = 0;
 	int size = c.size();
 
 	for (int i = 0; i < size; i++) {
 		if (c[i] == '@') {
 			valArroC++;
-		}
-		if (c[i] == '.') {
-			valPuntC++;
 		}
 	}
 
@@ -182,7 +179,6 @@ int main() {
 		selec = _getch();
 	}
 	
-
 	switch (selec) {
 	case '1': manual();
 		break;
