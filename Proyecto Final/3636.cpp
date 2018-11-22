@@ -206,7 +206,7 @@ void editarLista() {
 			    cout << i + 1 << ".-   Matricula: " << a[i].matr << ". " << endl;
 			    cout << "      Apellido y Nombre: " << a[i].apellidoP << " " << a[i].apellidoM << " " << a[i].nombre << ". " << endl;
 			    cout << "      Correo Electronico: " << a[i].correo << ". Teléfono: " << a[i].tel << ". " << endl;
-			    cout << "      Dirección: " << a[i].calle << " " << a[i].num << ", " << a[i].col << endl;
+			    cout << "      Dirección: " << a[i].calle << " #" << a[i].num << ", " << a[i].col << endl;
 			    cout << "      Calificaciones: C1: " << a[i].cal[0] << ". " << " C2: " << a[i].cal[1] << ". " << " C3: " << a[i].cal[2] << ". " << endl;
 			    a[i].PF = calculaPromedio(a[i].cal[0], a[i].cal[1], a[i].cal[2]);
 			    cout << "      Promedio Final: " << a[i].PF << " ." << endl;
